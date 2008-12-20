@@ -1,0 +1,12 @@
+Usage:
+
+	class MySuperForm(forms.Form):
+	      ...
+	      captcha = supercaptcha.CaptchaField(label=u'no robots here')
+	      ...
+
+You don't need any changes in form, or middleware or context processor or
+other boring things.
+
+All you need, to get captcha working is properly configured cache backend.
+And surely PIL library installed.
