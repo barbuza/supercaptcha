@@ -33,3 +33,5 @@ VERTICAL_JUMP = getattr(settings, 'CAPTCHA_VERTICAL_JUMP', True)
 SIZE = getattr(settings, 'CAPTCHA_SIZE', (200, 100))
 ALT = getattr(settings, 'CAPTCHA_ALT', 'no robots here')
 FORMAT = getattr(settings, 'CAPTCHA_FORMAT', ('JPEG', 'image/jpeg'))
+
+CACHE_PREFIX = getattr(settings, 'CAPTCHA_CACHE_PREFIX', 'captcha')

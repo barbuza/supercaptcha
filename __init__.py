@@ -12,8 +12,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy
 from django.views.decorators.cache import never_cache
 
-from os import path
 import settings
+
 
 WIDTH = settings.SIZE[0]
 HEIGHT = settings.SIZE[1]
@@ -24,7 +24,7 @@ FG_COLORS = settings.FOREGROUND_COLORS
 ENC_TYPE, MIME_TYPE = settings.FORMAT
 JUMP = settings.VERTICAL_JUMP
 COLORIZE = settings.COLORIZE_SYMBOLS
-
+PREFIX = settings.CACHE_PREFIX
 
 try:
     from threading import local
@@ -62,9 +62,9 @@ def generate_text():
 def draw(request, code):
     
     font_name, fontfile = choice(settings.AVAIL_FONTS)
-    cache_name = 'captcha-%s-size' % font_name
+    cache_name = '%s-%s-size' % (PREFIX, font_name)
     text = generate_text()
-    cache.set('captcha-%s' % code, text, 600)
+    cache.set('%s-%s' % (PREFIX, code), text, 600)
     
     def fits(font_size):
         font = ImageFont.truetype(fontfile, font_size)
@@ -188,8 +188,8 @@ class CaptchaField(forms.MultiValueField):
             raise forms.ValidationError, self.error_messages['wrong']
         
         code, text = value
-        cached_text = cache.get('captcha-%s' % code)
-        cache.set('captcha-%s' % code, generate_text(), 600)
+        cached_text = cache.get('%s-%s' % (PREFIX, code))
+        cache.set('%s-%s' % (PREFIX, code), generate_text(), 600)
         
         if not cached_text:
             raise forms.ValidationError, self.error_messages['internal']
