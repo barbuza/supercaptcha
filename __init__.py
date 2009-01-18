@@ -102,7 +102,10 @@ def draw(request, code):
         shift_max = shift_max * 3 / 4
         for char in text:
             l_size = font.getsize(char)
-            position[1] = choice(range(shift_min, shift_max))
+            try:
+                position[1] = choice(range(shift_min, shift_max + 1))
+            except IndexError:
+                position[1] = shift_min
             d.text(position, char, font=font, fill=get_color())
             position[0] += l_size[0]
     else:
