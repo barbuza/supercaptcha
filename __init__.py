@@ -22,6 +22,7 @@ LENGTH = settings.LENGTH
 BG_COLOR = settings.BACKGROUND_COLOR
 FG_COLOR = settings.FOREGROUND_COLOR
 ENC_TYPE, MIME_TYPE = settings.FORMAT
+JUMP = settings.VERTICAL_JUMP
 
 try:
     from threading import local
@@ -87,15 +88,20 @@ def draw(request, code):
     im = Image.new('RGB', (WIDTH, HEIGHT), BG_COLOR)
     
     d = ImageDraw.Draw(im)
-    position = [(WIDTH - text_size[0]) / 2, 0]
-    shift_max = HEIGHT - text_size[1]
-    shift_min = shift_max / 4
-    shift_max = shift_max * 3 / 4
-    for char in text:
-        l_size = font.getsize(char)
-        position[1] = choice(range(shift_min, shift_max))
-        d.text(position, char, font=font, fill=FG_COLOR)
-        position[0] += l_size[0]
+    if JUMP:
+        position = [(WIDTH - text_size[0]) / 2, 0]
+        shift_max = HEIGHT - text_size[1]
+        shift_min = shift_max / 4
+        shift_max = shift_max * 3 / 4
+        for char in text:
+            l_size = font.getsize(char)
+            position[1] = choice(range(shift_min, shift_max))
+            d.text(position, char, font=font, fill=FG_COLOR)
+            position[0] += l_size[0]
+    else:
+        position = [(WIDTH - text_size[0]) / 2,
+                    (HEIGHT - text_size[1]) / 2]
+        d.text(position, text, font=font, fill=FG_COLOR)
     
     response = HttpResponse(mimetype=MIME_TYPE)
     
@@ -109,7 +115,8 @@ def draw(request, code):
 
 class CaptchaImageWidget(forms.Widget):
     
-    template = '<img src="%(src)s?%(rnd)s" alt="%(alt)s" width="%(width)s" height="%(height)s" /><input%(input_attrs)s />'
+    template = '<img src="%(src)s?%(rnd)s" alt="%(alt)s" width="%(width)s" height="%(height)s" />'\
+        '<input%(input_attrs)s maxlength="%(length)s" />'
     
     
     def render(self, name, value, attrs=None):
@@ -118,7 +125,7 @@ class CaptchaImageWidget(forms.Widget):
         input_attrs = self.build_attrs(attrs, type='text', name=name)
         src = reverse(draw, kwargs={'code': code})
         return mark_safe(self.template % {'src': src, 'input_attrs': flatatt(input_attrs),
-                                          'alt': settings.ALT, 'width': WIDTH,
+                                          'alt': settings.ALT, 'width': WIDTH, 'length': LENGTH,
                                           'height': HEIGHT, 'rnd': random()})
 
 class HiddenCodeWidget(forms.HiddenInput):
