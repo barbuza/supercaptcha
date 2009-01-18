@@ -15,6 +15,14 @@ from django.views.decorators.cache import never_cache
 import settings
 
 
+try:
+    from threading import local
+except ImportError:
+    from django.utils._threading_local import local
+
+_thread_locals = local()
+
+
 WIDTH = settings.SIZE[0]
 HEIGHT = settings.SIZE[1]
 SYMBOLS = settings.SYMBOLS
@@ -25,16 +33,6 @@ ENC_TYPE, MIME_TYPE = settings.FORMAT
 JUMP = settings.VERTICAL_JUMP
 COLORIZE = settings.COLORIZE_SYMBOLS
 PREFIX = settings.CACHE_PREFIX
-
-try:
-    from threading import local
-except ImportError:
-    from django.utils._threading_local import local
-
-
-_thread_locals = local()
-
-
 CODE_ATTR_NAME = '_captcha_code'
 
 
