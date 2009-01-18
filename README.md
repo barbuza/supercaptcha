@@ -30,38 +30,38 @@ Configuration
 
 All these options should be used in settings of your project
 
-#### CAPTCHA_SYMBOLS
+#### CAPTCHA\_SYMBOLS
 string with all symbols, which should be used in captcha, default is '123456789ABCDEFGHJKLMNPQRSTVXYZ'
 
-#### CAPTCHA_LENGTH
+#### CAPTCHA\_LENGTH
 length if captcha code, default is 6
 
-#### CAPTCHA_FONTS
+#### CAPTCHA\_FONTS
 the tuple of tuples with name - fullpath pair for each font which should be used
 
-#### CAPTCHA_FOREGROUND_COLORS
+#### CAPTCHA\_FOREGROUND\_COLORS
 tuple of tuples with colors for text. use one if if you want single color, for example ((0,0,0),) for black color
 
-#### CAPTCHA_COLORIZE_SYMBOLS
+#### CAPTCHA\_COLORIZE\_SYMBOLS
 whould we use different colors for each symbol default is True
 
-#### CAPTCHA_BACKGROUND_COLOR
+#### CAPTCHA\_BACKGROUND\_COLOR
 background color, deafult is (255, 255, 255)
  
-#### CAPTCHA_FILTER_CHAIN
+#### CAPTCHA\_FILTER\_CHAIN
 PIL filters, for example ('BLUR', 'SHARPEN',) default is []
 
-#### CAPTCHA_VERTICAL_JUMP
+#### CAPTCHA\_VERTICAL\_JUMP
 defines if letters should "jump", default is True
 
-#### CAPTCHA_SIZE
+#### CAPTCHA\_SIZE
 tuple defining size of captcha image, default is (200, 100)
 
-#### CAPTCHA_ALT
+#### CAPTCHA\_ALT
 "alt" for image tag, default is 'not robots here'
 
-#### CAPTCHA_FORMAT
+#### CAPTCHA\_FORMAT
 controls which format will be used for image encoding, default is ('JPEG', 'image/jpeg')
 
-#### CAPTCHA_CACHE_PREFIX
+#### CAPTCHA\_CACHE\_PREFIX
 defines which prefix should supercaptcha use for dealing with cache, default is 'captcha'
