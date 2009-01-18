@@ -12,8 +12,16 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy
 from django.views.decorators.cache import never_cache
 
+from os import path
 import settings
 
+WIDTH = settings.SIZE[0]
+HEIGHT = settings.SIZE[1]
+SYMBOLS = settings.SYMBOLS
+LENGTH = settings.LENGTH
+BG_COLOR = settings.BACKGROUND_COLOR
+FG_COLOR = settings.FOREGROUND_COLOR
+ENC_TYPE, MIME_TYPE = settings.FORMAT
 
 try:
     from threading import local
@@ -44,47 +52,59 @@ def empty_current_code():
 
 
 def generate_text():
-    return ''.join([choice(settings.SYMBOLS) for _ in range(settings.LENGTH)])
+    return ''.join([choice(SYMBOLS) for _ in range(LENGTH)])
 
 
 @never_cache
 def draw(request, code):
     
-    curr_font = choice(settings.AVAIL_FONTS)
-    fontsize = choice(range(curr_font[1] - 3, curr_font[1]))
+    font_name, fontfile = choice(settings.AVAIL_FONTS)
+    cache_name = 'captcha-%s-size' % font_name
     text = generate_text()
     cache.set('captcha-%s' % code, text, 600)
     
-    def get_image_size(fontname, fontsize, text, max_width):
-        font = ImageFont.truetype(fontname, fontsize)
-        img_size = list(font.getsize(text))
-        img_size[0] += settings.LENGTH * 4 + settings.START_POSITION[0]
-        img_size[1] +=15
-        while img_size[0] > max_width:
-            fontsize -= 1
-            font = ImageFont.truetype(fontname, fontsize)
-            img_size = list(font.getsize(text))
-            img_size[0] += settings.LENGTH * 4 + settings.START_POSITION[0]
-            img_size[1] += 15
-        return font, Image.new('RGB', img_size, settings.BACKGROUND_COLOR)
-
-    font, im = get_image_size(curr_font[0], fontsize, text, settings.MAX_IMAGE_WIDTH)
-
+    def fits(font_size):
+        font = ImageFont.truetype(fontfile, font_size)
+        size = font.getsize(text)
+        return size[0] < WIDTH and size[1] < HEIGHT
+    
+    font_size = cache.get(cache_name , 10)
+    if fits(font_size):
+        while True:
+            font_size += 1
+            if not fits(font_size):
+                font_size -= 1
+                break
+    else:
+        while True:
+            font_size -= 1
+            if fits(font_size):
+                break
+    cache.set(cache_name, font_size, 600)
+    
+    font = ImageFont.truetype(fontfile, font_size)
+    text_size = font.getsize(text)
+    im = Image.new('RGB', (WIDTH, HEIGHT), BG_COLOR)
+    
     d = ImageDraw.Draw(im)
-    position = list(settings.START_POSITION)
+    position = [(WIDTH - text_size[0]) / 2, 0]
+    shift_max = HEIGHT - text_size[1]
+    shift_min = shift_max / 4
+    shift_max = shift_max * 3 / 4
     for char in text:
         l_size = font.getsize(char)
-        position[1] = choice(range(1, 15))
-        d.text(position, char, font=font,
-               fill=settings.FOREGROUND_COLOR)
-        position[0] += l_size[0] + 2
-     
-    response = HttpResponse(mimetype='image/gif')
-    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
+        position[1] = choice(range(shift_min, shift_max))
+        d.text(position, char, font=font, fill=FG_COLOR)
+        position[0] += l_size[0]
+    
+    response = HttpResponse(mimetype=MIME_TYPE)
+    
+    response['cache-control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
+    
     for f in settings.FILTER_CHAIN:
         im = im.filter(getattr(ImageFilter, f))
-    im.rotate(45)
-    im.save(response, "GIF")
+    
+    im.save(response, ENC_TYPE)
     return response
 
 class CaptchaImageWidget(forms.Widget):
@@ -98,8 +118,8 @@ class CaptchaImageWidget(forms.Widget):
         input_attrs = self.build_attrs(attrs, type='text', name=name)
         src = reverse(draw, kwargs={'code': code})
         return mark_safe(self.template % {'src': src, 'input_attrs': flatatt(input_attrs),
-                                          'alt': settings.ALT, 'width': settings.WIDTH,
-                                          'height': settings.HEIGHT, 'rnd': random()})
+                                          'alt': settings.ALT, 'width': WIDTH,
+                                          'height': HEIGHT, 'rnd': random()})
 
 class HiddenCodeWidget(forms.HiddenInput):
 	
