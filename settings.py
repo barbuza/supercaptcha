@@ -22,7 +22,7 @@ FOREGROUND_COLORS = getattr(settings, 'CAPTCHA_FOREGROUND_COLORS', (
         (0, 0, 0x77),
         ))
 
-COLORIZE_SYMBOLS = getattr(settings, 'CAPTCHA_COLORIZE_SyMBOLS', True)
+COLORIZE_SYMBOLS = getattr(settings, 'CAPTCHA_COLORIZE_SYMBOLS', True)
 
 BACKGROUND_COLOR = getattr(settings, 'CAPTCHA_BACKGROUND_COLOR', (255, 255, 255))
 
