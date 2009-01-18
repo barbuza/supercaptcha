@@ -8,14 +8,22 @@ SELF_DIR = dirname(abspath(__file__))
 FONTS_DIR = join(SELF_DIR, 'fonts')
 
 SYMBOLS = getattr(settings, 'CAPTCHA_SYMBOLS', '123456789ABCDEFGHJKLMNPQRSTVXYZ')
-LENGTH = getattr(settings, 'CAPTCHA_LENGTH', 10)
+LENGTH = getattr(settings, 'CAPTCHA_LENGTH', 6)
 
 AVAIL_FONTS = getattr(settings, 'CAPTCHA_FONTS', [
         ('boneca', join(FONTS_DIR, 'boneca.ttf')),
         ('acidic', join(FONTS_DIR, 'acidic.ttf')),
 ])
 
-FOREGROUND_COLOR = getattr(settings, 'CAPTCHA_FOREGROUND_COLOR', (0, 0, 0))
+FOREGROUND_COLORS = getattr(settings, 'CAPTCHA_FOREGROUND_COLORS', (
+        (0, 0, 0),
+        (0x77, 0, 0),
+        (0, 0x77, 0),
+        (0, 0, 0x77),
+        ))
+
+COLORIZE_SYMBOLS = getattr(settings, 'CAPTCHA_COLORIZE_SyMBOLS', True)
+
 BACKGROUND_COLOR = getattr(settings, 'CAPTCHA_BACKGROUND_COLOR', (255, 255, 255))
 
 FILTER_CHAIN = getattr(settings, 'CAPTCHA_FILTER_CHAIN', [])

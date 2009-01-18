@@ -20,9 +20,11 @@ HEIGHT = settings.SIZE[1]
 SYMBOLS = settings.SYMBOLS
 LENGTH = settings.LENGTH
 BG_COLOR = settings.BACKGROUND_COLOR
-FG_COLOR = settings.FOREGROUND_COLOR
+FG_COLORS = settings.FOREGROUND_COLORS
 ENC_TYPE, MIME_TYPE = settings.FORMAT
 JUMP = settings.VERTICAL_JUMP
+COLORIZE = settings.COLORIZE_SYMBOLS
+
 
 try:
     from threading import local
@@ -86,9 +88,14 @@ def draw(request, code):
     font = ImageFont.truetype(fontfile, font_size)
     text_size = font.getsize(text)
     im = Image.new('RGB', (WIDTH, HEIGHT), BG_COLOR)
-    
+
     d = ImageDraw.Draw(im)
     if JUMP:
+        if COLORIZE:
+            get_color = lambda: choice(FG_COLORS)
+        else:
+            color = choice(FG_COLORS)
+            get_color = lambda: color
         position = [(WIDTH - text_size[0]) / 2, 0]
         shift_max = HEIGHT - text_size[1]
         shift_min = shift_max / 4
@@ -96,12 +103,12 @@ def draw(request, code):
         for char in text:
             l_size = font.getsize(char)
             position[1] = choice(range(shift_min, shift_max))
-            d.text(position, char, font=font, fill=FG_COLOR)
+            d.text(position, char, font=font, fill=get_color())
             position[0] += l_size[0]
     else:
         position = [(WIDTH - text_size[0]) / 2,
                     (HEIGHT - text_size[1]) / 2]
-        d.text(position, text, font=font, fill=FG_COLOR)
+        d.text(position, text, font=font, fill=choice(FG_COLORS))
     
     response = HttpResponse(mimetype=MIME_TYPE)
     
