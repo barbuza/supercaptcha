@@ -35,3 +35,5 @@ ALT = getattr(settings, 'CAPTCHA_ALT', 'no robots here')
 FORMAT = getattr(settings, 'CAPTCHA_FORMAT', ('JPEG', 'image/jpeg'))
 
 CACHE_PREFIX = getattr(settings, 'CAPTCHA_CACHE_PREFIX', 'captcha')
+
+DEFAULT_ERROR_MESSAGE = getattr(settings, 'CAPTCHA_DEFAULT_ERROR_MESSAGE', u'The code you entered is wrong.')

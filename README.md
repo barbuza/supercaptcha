@@ -65,3 +65,6 @@ controls which format will be used for image encoding, default is ('JPEG', 'imag
 
 #### CAPTCHA\_CACHE\_PREFIX
 defines which prefix should supercaptcha use for dealing with cache, default is 'captcha'
+
+#### CAPTCHA\_DEFAULT\_ERROR\_MESSAGE
+defines default error message for wrong code

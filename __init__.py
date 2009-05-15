@@ -34,7 +34,7 @@ JUMP = settings.VERTICAL_JUMP
 COLORIZE = settings.COLORIZE_SYMBOLS
 PREFIX = settings.CACHE_PREFIX
 CODE_ATTR_NAME = '_captcha_code'
-
+ERROR_MESSAGE = settings.DEFAULT_ERROR_MESSAGE
 
 def get_current_code():
     if not hasattr(_thread_locals, CODE_ATTR_NAME):
@@ -166,7 +166,7 @@ class CaptchaField(forms.MultiValueField):
     widget = CaptchaWidget
 
     default_error_messages = {
-        'wrong': ugettext_lazy(u'The code you entered is wrong.'),
+        'wrong': ugettext_lazy(ERROR_MESSAGE),
         'required': ugettext_lazy(u'This field is required.'),
         'internal': ugettext_lazy(u'Internal error.'),
         }
