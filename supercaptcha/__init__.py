@@ -159,6 +159,11 @@ class CaptchaWidget(forms.MultiWidget):
             return value.split()
         return [None, None]
 
+    @classmethod
+    def id_for_label(cls, id_):
+        if id_:
+            id_ += '_1'
+        return id_
 
 
 class CaptchaField(forms.MultiValueField):
