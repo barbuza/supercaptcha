@@ -25,7 +25,7 @@ _thread_locals = local()
 
 WIDTH = settings.SIZE[0]
 HEIGHT = settings.SIZE[1]
-SYMBOLS = settings.SYMBOLS
+SYMBOLS = ugettext_lazy(settings.SYMBOLS)
 LENGTH = settings.LENGTH
 BG_COLOR = settings.BACKGROUND_COLOR
 FG_COLORS = settings.FOREGROUND_COLORS
