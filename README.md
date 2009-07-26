@@ -68,3 +68,15 @@ defines which prefix should supercaptcha use for dealing with cache, default is 
 
 #### CAPTCHA\_DEFAULT\_ERROR\_MESSAGE
 defines default error message for wrong code
+
+#### CAPTCHA\_REFRESH
+defines if CaptchaField should show refresh link, default is False
+
+#### CAPTCHA\_REFRESH\_LINK\_TEXT
+defines text of refresh link
+
+#### CAPTCHA\_HTML\_TEMPLATE
+defines template of CaptchaField, see example in settings
+
+#### CAPTCHA\_HTML\_TEMPLATE\_WITH\_REFRESH
+defines template of CaptchaField with refresh link, see example in settings

@@ -35,6 +35,11 @@ COLORIZE = settings.COLORIZE_SYMBOLS
 PREFIX = settings.CACHE_PREFIX
 CODE_ATTR_NAME = '_captcha_code'
 ERROR_MESSAGE = settings.DEFAULT_ERROR_MESSAGE
+HTML_TEMPLATE = settings.HTML_TEMPLATE
+HTML_TEMPLATE_WITH_REFRESH = settings.HTML_TEMPLATE_WITH_REFRESH
+REFRESH = settings.REFRESH
+REFRESH_LINK_TEXT = settings.REFRESH_LINK_TEXT
+
 
 def get_current_code():
     if not hasattr(_thread_locals, CODE_ATTR_NAME):
@@ -123,9 +128,10 @@ def draw(request, code):
 
 class CaptchaImageWidget(forms.Widget):
     
-    template = '<img src="%(src)s?%(rnd)s" alt="%(alt)s" width="%(width)s" height="%(height)s" />'\
-        '<input%(input_attrs)s maxlength="%(length)s" />'
-    
+    if REFRESH:
+        template = HTML_TEMPLATE_WITH_REFRESH
+    else:
+        template = HTML_TEMPLATE
     
     def render(self, name, value, attrs=None):
         code = get_current_code()
@@ -134,7 +140,8 @@ class CaptchaImageWidget(forms.Widget):
         src = reverse(draw, kwargs={'code': code})
         return mark_safe(self.template % {'src': src, 'input_attrs': flatatt(input_attrs),
                                           'alt': settings.ALT, 'width': WIDTH, 'length': LENGTH,
-                                          'height': HEIGHT, 'rnd': random()})
+                                          'height': HEIGHT, 'rnd': random(),
+                                          'refresh_text': REFRESH_LINK_TEXT})
 
 class HiddenCodeWidget(forms.HiddenInput):
 	

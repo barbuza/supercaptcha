@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='supercaptcha',
-    version='',
+    version='0.1',
     packages=['supercaptcha'],
     package_data={
         '':['fonts/*.ttf']

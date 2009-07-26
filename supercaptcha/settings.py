@@ -37,3 +37,19 @@ FORMAT = getattr(settings, 'CAPTCHA_FORMAT', ('JPEG', 'image/jpeg'))
 CACHE_PREFIX = getattr(settings, 'CAPTCHA_CACHE_PREFIX', 'captcha')
 
 DEFAULT_ERROR_MESSAGE = getattr(settings, 'CAPTCHA_DEFAULT_ERROR_MESSAGE', u'The code you entered is wrong.')
+
+REFRESH_LINK_TEXT = getattr(settings, 'CAPTCHA_REFRESH_LINK_TEXT', u'refresh')
+
+REFRESH = getattr(settings, 'CAPTCHA_REFRESH', False)
+
+HTML_TEMPLATE = getattr(settings, 'CAPTCHA_HTML_TEMPLATE', """
+<img src="%(src)s?%(rnd)s" alt="%(alt)s" width="%(width)s" height="%(height)s" />
+<input%(input_attrs)s maxlength="%(length)s" />
+""")
+
+HTML_TEMPLATE_WITH_REFRESH = getattr(settings, 'CAPTCHA_HTML_TEMPLATE_WITH_REFRESH', """
+<img src="%(src)s?%(rnd)s" alt="%(alt)s" width="%(width)s" height="%(height)s" />
+<a onclick="var img=this.previousSibling;if(img.nodeType==document.TEXT_NODE){img=img.previousSibling};img.src=img.src.substring(0,img.src.indexOf('?')+1)+Math.random();return false;"
+   href="#refresh" class="supercaptcha-refresh">%(refresh_text)s</a>
+<input%(input_attrs)s maxlength="%(length)s" />
+""")
