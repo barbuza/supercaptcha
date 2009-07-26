@@ -2,7 +2,7 @@ supercaptcha
 ============
 
 supercaptcha is easy to use captcha field for [django](http://code.djangoproject.com/) newforms
-
+mercurial repo and tickets available at [bitbucket](http://bitbucket.org/barbuza/supercaptcha)
 
 Usage
 -----
