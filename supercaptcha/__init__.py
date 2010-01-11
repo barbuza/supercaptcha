@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-from random import choice, random
-from uuid import uuid4
 
-import Image, ImageDraw, ImageFont, ImageFilter
+import os
+from random import choice, random
+
+try:
+    import Image, ImageDraw, ImageFont, ImageFilter
+except ImportError:
+    from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from django import forms
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -43,7 +47,7 @@ REFRESH_LINK_TEXT = ugettext_lazy(settings.REFRESH_LINK_TEXT)
 
 def get_current_code():
     if not hasattr(_thread_locals, CODE_ATTR_NAME):
-        code = uuid4().get_hex()
+        code = os.urandom(16).encode('hex')
         setattr(_thread_locals, CODE_ATTR_NAME, code)
     return getattr(_thread_locals, CODE_ATTR_NAME)
 
