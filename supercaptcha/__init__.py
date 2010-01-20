@@ -94,7 +94,8 @@ def draw(request, code):
     
     font = ImageFont.truetype(fontfile, font_size)
     text_size = font.getsize(text)
-    im = Image.new('RGB', (WIDTH, HEIGHT), BG_COLOR)
+    im = Image.new('RGBA' if len(BG_COLOR) == 4 else 'RGB',
+                   (WIDTH, HEIGHT), BG_COLOR)
 
     d = ImageDraw.Draw(im)
     if JUMP:
