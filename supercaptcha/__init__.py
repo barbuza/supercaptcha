@@ -94,9 +94,10 @@ def draw(request, code):
     
     font = ImageFont.truetype(fontfile, font_size)
     text_size = font.getsize(text)
-    im = Image.new('RGBA' if len(BG_COLOR) == 4 else 'RGB',
-                   (WIDTH, HEIGHT), BG_COLOR)
-
+    icolor = 'RGB'
+    if len(BG_COLOR) == 4:
+        icolor = 'RGBA'
+    im = Image.new(icolor, (WIDTH, HEIGHT), BG_COLOR)
     d = ImageDraw.Draw(im)
     if JUMP:
         if COLORIZE:
