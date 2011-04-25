@@ -59,7 +59,7 @@ defines if letters should "jump", default is True
 tuple defining size of captcha image, default is (200, 100)
 
 #### CAPTCHA\_ALT
-"alt" for image tag, default is 'not robots here'
+"alt" for image tag, default is 'no robots here'
 
 #### CAPTCHA\_FORMAT
 controls which format will be used for image encoding, default is ('JPEG', 'image/jpeg')
