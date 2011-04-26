@@ -114,9 +114,4 @@ defines template of CaptchaField with refresh link, see example in settings
 .. toctree::
    :maxdepth: 2
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
 
