@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Supercaptcha by barbuza</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Supercaptcha</h1>
+        <p>captchafield for django newforms</p>
+
+        <p class="view"><a href="https://github.com/barbuza/supercaptcha">View the Project on GitHub <small>barbuza/supercaptcha</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/barbuza/supercaptcha/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/barbuza/supercaptcha/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/barbuza/supercaptcha">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="supercaptcha" class="anchor" href="#supercaptcha"><span class="octicon octicon-link"></span></a>supercaptcha</h1>
+
+<p>supercaptcha is easy to use captcha field for django</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>usage</h2>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MySuperForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+
+    <span class="n">captcha</span> <span class="o">=</span> <span class="n">supercaptcha</span><span class="o">.</span><span class="n">CaptchaField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">u"no robots here"</span><span class="p">)</span>
+</pre></div>
+
+<h2>
+<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>requirements</h2>
+
+<p>You don't need any changes in form, or middleware or context processor or other mess</p>
+
+<p>All you need, to get captcha working is properly configured cache backend and a route:</p>
+
+<pre><code>url(r'^captcha/(?P&lt;code&gt;[\da-f]{32})/$', 'supercaptcha.draw')
+</code></pre>
+
+<p>And <code>PIL</code> installed</p>
+
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>configuration</h2>
+
+<p>All these options should be used in settings of your project</p>
+
+<h4>
+<a name="captcha_symbols" class="anchor" href="#captcha_symbols"><span class="octicon octicon-link"></span></a><code>CAPTCHA_SYMBOLS</code>
+</h4>
+
+<p>string with all symbols, which should be used in captcha, default is <code>'123456789ABCDEFGHJKLMNPQRSTVXYZ'</code></p>
+
+<h4>
+<a name="captcha_length" class="anchor" href="#captcha_length"><span class="octicon octicon-link"></span></a><code>CAPTCHA_LENGTH</code>
+</h4>
+
+<p>length if captcha code, default is <code>6</code></p>
+
+<h4>
+<a name="captcha_fonts" class="anchor" href="#captcha_fonts"><span class="octicon octicon-link"></span></a><code>CAPTCHA_FONTS</code>
+</h4>
+
+<p>the tuple of tuples with name - fullpath pair for each font which should be used</p>
+
+<h4>
+<a name="captcha_foreground_colors" class="anchor" href="#captcha_foreground_colors"><span class="octicon octicon-link"></span></a><code>CAPTCHA_FOREGROUND_COLORS</code>
+</h4>
+
+<p>tuple of tuples with colors for text. use one if if you want single color, for example <code>((0,0,0),)</code> for black color</p>
+
+<h4>
+<a name="captcha_colorize_symbols" class="anchor" href="#captcha_colorize_symbols"><span class="octicon octicon-link"></span></a><code>CAPTCHA_COLORIZE_SYMBOLS</code>
+</h4>
+
+<p>whould we use different colors for each symbol default is <code>True</code></p>
+
+<h4>
+<a name="captcha_background_color" class="anchor" href="#captcha_background_color"><span class="octicon octicon-link"></span></a><code>CAPTCHA_BACKGROUND_COLOR</code>
+</h4>
+
+<p>background color, deafult is <code>(255, 255, 255)</code></p>
+
+<h4>
+<a name="captcha_filter_chain" class="anchor" href="#captcha_filter_chain"><span class="octicon octicon-link"></span></a><code>CAPTCHA_FILTER_CHAIN</code>
+</h4>
+
+<p>PIL filters, for example <code>('BLUR', 'SHARPEN',)</code> default is <code>[]</code></p>
+
+<h4>
+<a name="captcha_vertical_jump" class="anchor" href="#captcha_vertical_jump"><span class="octicon octicon-link"></span></a><code>CAPTCHA_VERTICAL_JUMP</code>
+</h4>
+
+<p>defines if letters should "jump", default is <code>True</code></p>
+
+<h4>
+<a name="captcha_size" class="anchor" href="#captcha_size"><span class="octicon octicon-link"></span></a><code>CAPTCHA_SIZE</code>
+</h4>
+
+<p>tuple defining size of captcha image, default is <code>(200, 100)</code></p>
+
+<h4>
+<a name="captcha_alt" class="anchor" href="#captcha_alt"><span class="octicon octicon-link"></span></a><code>CAPTCHA_ALT</code>
+</h4>
+
+<p>"alt" for image tag, default is <code>'no robots here'</code></p>
+
+<h4>
+<a name="captcha_format" class="anchor" href="#captcha_format"><span class="octicon octicon-link"></span></a><code>CAPTCHA_FORMAT</code>
+</h4>
+
+<p>controls which format will be used for image encoding, default is <code>('JPEG', 'image/jpeg')</code></p>
+
+<h4>
+<a name="captcha_cache_prefix" class="anchor" href="#captcha_cache_prefix"><span class="octicon octicon-link"></span></a><code>CAPTCHA_CACHE_PREFIX</code>
+</h4>
+
+<p>defines which prefix should supercaptcha use for dealing with cache, default is <code>'captcha'</code></p>
+
+<h4>
+<a name="captcha_default_error_message" class="anchor" href="#captcha_default_error_message"><span class="octicon octicon-link"></span></a><code>CAPTCHA_DEFAULT_ERROR_MESSAGE</code>
+</h4>
+
+<p>defines default error message for wrong code</p>
+
+<h4>
+<a name="captcha_refresh" class="anchor" href="#captcha_refresh"><span class="octicon octicon-link"></span></a><code>CAPTCHA_REFRESH</code>
+</h4>
+
+<p>defines if CaptchaField should show refresh link, default is <code>False</code></p>
+
+<h4>
+<a name="captcha_refresh_link_text" class="anchor" href="#captcha_refresh_link_text"><span class="octicon octicon-link"></span></a><code>CAPTCHA_REFRESH_LINK_TEXT</code>
+</h4>
+
+<p>defines text of refresh link</p>
+
+<h4>
+<a name="captcha_html_template" class="anchor" href="#captcha_html_template"><span class="octicon octicon-link"></span></a><code>CAPTCHA_HTML_TEMPLATE</code>
+</h4>
+
+<p>defines template of CaptchaField, see example in settings</p>
+
+<h4>
+<a name="captcha_html_template_with_refresh" class="anchor" href="#captcha_html_template_with_refresh"><span class="octicon octicon-link"></span></a><code>CAPTCHA_HTML_TEMPLATE_WITH_REFRESH</code>
+</h4>
+
+<p>defines template of CaptchaField with refresh link, see example in settings</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/barbuza">barbuza</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
