@@ -13,7 +13,7 @@ class MySuperForm(forms.Form):
 
 ## requirements
 
-You don't need any changes in form, or middleware or context processor or mess
+You don't need any changes in form, or middleware or context processor or other mess
 
 All you need, to get captcha working is properly configured cache backend and a route:
   
