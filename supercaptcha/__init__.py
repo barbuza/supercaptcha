@@ -204,13 +204,13 @@ class CaptchaField(forms.MultiValueField):
             raise forms.ValidationError, self.error_messages['wrong']
         
         code, text = value
-        cached_text = cache.get('%s-%s' % (PREFIX, code))
-        cache.set('%s-%s' % (PREFIX, code), generate_text(), 600)
-        
-        if not cached_text:
-            raise forms.ValidationError, self.error_messages['internal']
         if not text:
             raise forms.ValidationError, self.error_messages['required']
+
+        cached_text = cache.get('%s-%s' % (PREFIX, code))
+        cache.set('%s-%s' % (PREFIX, code), generate_text(), 600)
+        if not cached_text:
+            raise forms.ValidationError, self.error_messages['internal']
+
         if text.lower() != cached_text.lower():
             raise forms.ValidationError, self.error_messages['wrong']
-        
